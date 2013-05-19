@@ -2,11 +2,13 @@
 
 import tweepy
 
+from common import api
+
 def print_followers(args):
     user = args.user
     limit = args.limit
     fmt = args.fmt
-    for follower in user.followers()[:limit]:
+    for follower in tweepy.Cursor(api.followers, id=user.id).items(limit):
         try:
             print fmt % follower.__dict__
 
