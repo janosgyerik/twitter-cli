@@ -11,8 +11,19 @@ parser = argparse.ArgumentParser(description='Show users not following back')
 parser.add_argument('--limit', '-l', type=int, default=default_limit)
 parser.add_argument('--format', '-f', dest='fmt', default=default_fmt)
 parser.add_argument('--user', '-u')
+parser.add_argument('--whitelisted', '-w',
+        help='File with list of whitelisted users')
 
 args = parser.parse_args()
+
+if args.whitelisted:
+    with open(args.whitelisted) as instream:
+        args.whitelisted = []
+        for line in instream.readlines():
+            args.whitelisted.append(line.strip())
+else:
+    args.whitelisted = ()
+
 
 from twitter_cli.common import api
 
