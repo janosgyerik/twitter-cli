@@ -12,9 +12,14 @@ See detailed info about each command using the `-h` or `--help` flag.
 
 ### ./followers.py
 
+Show followers.
+
+### ./unfollowers.py
+
+Show users not following back.
+
 
 TODO
 ----
-- reorganize, clean up
-- base cli
+- remove duplication in followers.py and unfollowers.py
 - explain here how to create settings.py
