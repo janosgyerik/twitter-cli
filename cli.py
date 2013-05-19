@@ -15,9 +15,12 @@ parser.add_argument('--user', '-u')
 
 args = parser.parse_args()
 
-from common import me
-if not args.user:
-    args.user = me
+from common import api
+
+if args.user:
+    args.user = api.get_user(args.user)
+else:
+    args.user = api.me()
 
 if args.command == 'followers':
     import followers
