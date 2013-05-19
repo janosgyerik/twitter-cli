@@ -1,21 +1,27 @@
-''' todo '''
+#!/usr/bin/env python
+#
 
-import tweepy
+import argparse
 
-from common import api
+default_limit = 5
+default_fmt = '%(screen_name)s'
+#fmt = '* %(name)s (%(screen_name)s) t#=%(statuses_count)d fg=%(friends_count)d ff=%(followers_count)d l=%(lang)s\n%(description)s'
 
-def print_followers(args):
-    user = args.user
-    limit = args.limit
-    fmt = args.fmt
-    for follower in tweepy.Cursor(api.followers, id=user.id).items(limit):
-        try:
-            print fmt % follower.__dict__
+parser = argparse.ArgumentParser(description='Show followers')
+parser.add_argument('--limit', '-l', type=int, default=default_limit)
+parser.add_argument('--format', '-f', dest='fmt', default=default_fmt)
+parser.add_argument('--user', '-u')
 
-        except tweepy.error.TweepError, e:
-            print '* %s (%s)' % (
-                    follower.name,
-                    follower.screen_name,
-                    )
-            print '  Error:', e
+args = parser.parse_args()
 
+from twitter_cli.common import api
+
+if args.user:
+    args.user = api.get_user(args.user)
+else:
+    args.user = api.me()
+
+from twitter_cli.printing import print_followers
+print_followers(args)
+
+# eof
