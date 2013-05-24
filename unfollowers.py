@@ -2,6 +2,7 @@
 #
 
 import argparse
+import os
 
 default_limit = 5
 default_fmt = '%(screen_name)s'
@@ -11,16 +12,19 @@ parser = argparse.ArgumentParser(description='Show users not following back')
 parser.add_argument('--limit', '-l', type=int, default=default_limit)
 parser.add_argument('--format', '-f', dest='fmt', default=default_fmt)
 parser.add_argument('--user', '-u')
-parser.add_argument('--whitelisted', '-w',
+parser.add_argument('--whitelisted', '-w', nargs='+',
         help='File with list of whitelisted users')
 
 args = parser.parse_args()
 
 if args.whitelisted:
-    with open(args.whitelisted) as instream:
-        args.whitelisted = []
-        for line in instream.readlines():
-            args.whitelisted.append(line.strip())
+    whitelisted = set()
+    for path in args.whitelisted:
+        if os.path.isfile(path):
+            with open(path) as instream:
+                for line in instream.readlines():
+                    whitelisted.add(line.strip())
+    args.whitelisted = whitelisted
 else:
     args.whitelisted = ()
 
