@@ -2,3 +2,4 @@ blacklist.txt
 *.pyc
 settings.py
 whitelist.txt
+/tmp/
